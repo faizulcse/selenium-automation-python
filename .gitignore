@@ -1,0 +1,9 @@
+.idea/
+target/
+allure-results/
+allure-report/
+venv/
+driver/
+.pytest_cache/
+*/.pytest_cache
+*.pyc
