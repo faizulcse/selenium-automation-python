@@ -12,8 +12,10 @@ class BaseTest(unittest.TestCase):
         self.url = "http://localhost:4444/wd/hub"
         self.opts = webdriver.ChromeOptions()
         self.service = Service(r"C:\Users\BS705\PycharmProjects\selenium-automation-python\driver\chromedriver.exe")
-        self.driver = webdriver.Remote(RemoteConnection(self.url), options=self.opts) if (
-                os.getenv("remote") is True) else webdriver.Chrome(service=self.service, options=self.opts)
+        if os.getenv("remote"):
+            self.driver = webdriver.Remote(RemoteConnection(self.url), options=self.opts)
+        else:
+            self.driver = webdriver.Chrome(service=self.service, options=self.opts)
         self.driver.maximize_window()
         self.driver.get("https://www.google.com")
 
