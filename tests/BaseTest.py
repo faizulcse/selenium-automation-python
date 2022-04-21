@@ -1,32 +1,15 @@
-import os
 import unittest
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.remote.remote_connection import RemoteConnection
+from utils.DriverSetup import DriverSetup
 
 
 class BaseTest(unittest.TestCase):
 
     def setUp(self):
-        self.url = "http://localhost:4444/wd/hub"
-        self.opts = webdriver.ChromeOptions()
-        self.service = Service(r"C:\Users\BS705\PycharmProjects\selenium-automation-python\driver\chromedriver.exe")
-        if os.getenv("remote"):
-            self.driver = webdriver.Remote(RemoteConnection(self.url), options=self.opts)
-        else:
-            self.driver = webdriver.Chrome(service=self.service, options=self.opts)
-        self.driver.maximize_window()
-        self.driver.get("https://www.google.com")
+        print("=======setUp=======>")
+        self.setup = DriverSetup()
+        self.driver = self.setup.open_browser()
 
     def tearDown(self):
-        self.driver.quit()
-
-
-class TestCase(object):
-    pass
-
-
-if __name__ == "__main__":
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestCase)
-    unittest.TextTestRunner(verbosity=1).run(suite)
+        self.setup.close_browser()
+        print("=======tearDown=======>")
