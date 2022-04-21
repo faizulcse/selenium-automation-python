@@ -8,6 +8,7 @@ class LoginPage(BasePage):
         self.driver = driver
 
     def print_info(self):
+        self.wait_for_visibility((By.NAME, "q"))
         print(self.find_element(By.NAME, "q").tag_name)
         print(self.find_elements(By.NAME, "q").__len__())
         print(self.get_driver().title)
