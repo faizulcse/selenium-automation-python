@@ -15,7 +15,7 @@ class DriverSetup(object):
         options.add_argument("--headless")
 
         self.driver = webdriver.Remote(RemoteConnection(remote_url), options=options) \
-            if os.getenv("remote") is True else \
+            if os.getenv("remote") == "True" else \
             webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return self.driver
 
