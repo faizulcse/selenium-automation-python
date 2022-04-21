@@ -13,8 +13,10 @@ class DriverSetup(object):
         remote_url = "http://localhost:4444/wd/hub"
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options) \
-            if bool(os.getenv("remote")) is False else webdriver.Remote(RemoteConnection(remote_url), options=options)
+
+        self.driver = webdriver.Remote(RemoteConnection(remote_url), options=options) \
+            if os.getenv("remote") is True else \
+            webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return self.driver
 
     def close_browser(self):
