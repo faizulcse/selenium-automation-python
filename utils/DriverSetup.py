@@ -10,9 +10,9 @@ class DriverSetup(object):
     driver = None
 
     def open_browser(self):
-        remote_url = RemoteConnection(os.getenv('HUB_URL'))
+        remote_url = RemoteConnection(os.getenv('hub_url'))
         service = Service(ChromeDriverManager().install())
-        remote_run = os.getenv("REMOTE_RUN")
+        remote_run = os.getenv("remote_run")
         options = webdriver.ChromeOptions()
         options.add_argument("--headed")
         self.driver = webdriver.Remote(remote_url, options=options) \

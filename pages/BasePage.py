@@ -8,7 +8,7 @@ from utils.DriverSetup import DriverSetup
 
 
 class BasePage(DriverSetup):
-    default_wait = os.getenv('EXPLICIT_WAIT')
+    default_wait = os.getenv('explicit_wait')
 
     def find_element(self, *locator):
         return self.get_driver().find_element(*locator)

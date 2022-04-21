@@ -10,8 +10,8 @@ class BaseTest(unittest.TestCase):
         self.setup = DriverSetup()
         self.driver = self.setup.open_browser()
         self.driver.maximize_window()
-        self.driver.implicitly_wait(os.environ.get('IMPLICIT_WAIT'))
-        self.driver.get(os.environ.get('BASE_URL'))
+        self.driver.implicitly_wait(os.environ.get('implicit_wait'))
+        self.driver.get(os.environ.get('base_url'))
 
     def tearDown(self):
         self.setup.close_browser()
