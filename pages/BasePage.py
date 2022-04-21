@@ -1,3 +1,5 @@
+import os
+
 from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,7 +8,7 @@ from utils.DriverSetup import DriverSetup
 
 
 class BasePage(DriverSetup):
-    default_wait = 30
+    default_wait = os.getenv('EXPLICIT_WAIT')
 
     def find_element(self, *locator):
         return self.get_driver().find_element(*locator)
