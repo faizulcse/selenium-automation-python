@@ -1,7 +1,7 @@
 import pytest
 
-from pages.LoginPage import LoginPage
-from tests.BaseTest import BaseTest
+from src.pages.LoginPage import LoginPage
+from BaseTest import BaseTest
 
 
 class LoginTest(BaseTest):

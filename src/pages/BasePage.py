@@ -4,7 +4,7 @@ from selenium.common.exceptions import ElementNotVisibleException, ElementNotSel
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from utils.DriverSetup import DriverSetup
+from src.utils.DriverSetup import DriverSetup
 
 
 class BasePage(DriverSetup):

@@ -13,9 +13,9 @@ class DriverSetup(object):
         remote_url = RemoteConnection(os.getenv('hub_url'))
         options = webdriver.ChromeOptions()
         options.add_argument("--headed")
-        self.driver = webdriver.Remote(remote_url, options=options) if os.getenv("remote_run") == "True" \
+        DriverSetup.driver = webdriver.Remote(remote_url, options=options) if os.getenv("remote_run") == "true" \
             else webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        return self.driver
+        return DriverSetup.driver
 
     def close_browser(self):
         self.driver.quit()

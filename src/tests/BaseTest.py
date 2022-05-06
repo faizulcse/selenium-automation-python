@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from utils.DriverSetup import DriverSetup
+from src.utils.DriverSetup import DriverSetup
 
 
 class BaseTest(unittest.TestCase):
