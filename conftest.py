@@ -8,25 +8,29 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 def open_browser():
-    remote_url = RemoteConnection(os.getenv('hub_url'))
+    remote_url = RemoteConnection(os.getenv('HUB_URL'))
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    if os.getenv("headless").upper() == "TRUE":
+    if os.getenv("HEADLESS").lower() == "true":
         options.add_argument('--headless')
-    driver = webdriver.Remote(remote_url, options=options) if os.getenv("remote_run").upper() == "TRUE" \
-        else webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    if os.getenv("REMOTE_RUN").lower() == "true":
+        driver = webdriver.Remote(remote_url, options=options)
+    else:
+        ChromeDriverManager(log_level=0)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
     driver.maximize_window()
-    driver.implicitly_wait(os.environ.get('implicit_wait'))
-    driver.get(os.environ.get('base_url'))
+    driver.implicitly_wait(os.environ.get('IMPLICIT_WAIT'))
+    driver.get(os.environ.get('BASE_URL'))
+    return driver
+
+
+@pytest.fixture(autouse=True)
+def driver_init():
+    print("<===============Open Browser==============>")
+    driver = open_browser()
     pytest.driver = driver
-
-
-def close_browser():
-    pytest.driver.quit()
-
-
-@pytest.fixture()
-def browser_setup():
-    open_browser()
     yield
-    close_browser()
+    print("<===============Close Browser==============>")
+    driver.quit()

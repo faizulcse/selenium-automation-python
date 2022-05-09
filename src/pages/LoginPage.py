@@ -1,3 +1,4 @@
+import pytest
 from selenium.webdriver.common.by import By
 
 from src.pages.BasePage import BasePage
