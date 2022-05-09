@@ -9,7 +9,7 @@ class TestLogin(Hooks):
     def test_method_1(self):
         print("============testmethod_1============>")
 
-    # @pytest.mark.skip(reason="Skip by Tester")
+    @pytest.mark.login
     def test_method_2(self):
         login_page = LoginPage(self.driver)
         print("Session Id: " + login_page.get_session_id())
