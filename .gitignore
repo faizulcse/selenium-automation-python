@@ -3,11 +3,9 @@ target/
 allure-results/
 allure-report/
 venv/
-driver/
-.pytest_cache/
-*/.pytest_cache
+.pytest_cache
 *.pyc
-build/
-src/selenium_automation_python.egg-info
-dist/
-*/__init__.py
+*_init__.py
+build
+dist
+selenium_automation_python.egg-info
