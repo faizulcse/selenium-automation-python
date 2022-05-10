@@ -9,8 +9,8 @@ class TestLogin:
         print("============testmethod_1============>")
 
     @pytest.mark.login
-    def test_method_2(self, driver_init):
-        self.driver = driver_init
+    def test_method_2(self, setup):
+        self.driver = setup
         login_page = LoginPage(self.driver)
         print("Session Id: " + login_page.get_session_id())
         login_page.print_info()

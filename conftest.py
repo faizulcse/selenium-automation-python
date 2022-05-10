@@ -21,11 +21,15 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(autouse=True)
-def driver_init(browser, remote):
+def setup(browser, remote):
     driver = start_driver(browser, remote)
     driver.maximize_window()
     driver.get(os.environ.get("BASE_URL"))
     driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
-    # return driver
+    return driver
+
+
+@pytest.fixture(autouse=True)
+def tear_down(setup):
     yield
-    stop_driver(driver)
+    stop_driver(setup)
