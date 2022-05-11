@@ -26,7 +26,7 @@ def current_driver(request):
     driver.maximize_window()
     driver.get(os.environ.get("BASE_URL"))
     driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
-    yield
+    yield driver
     if pytest.data.getoption("--DETACH") == "false" and driver is not None:
         driver.quit()
 
