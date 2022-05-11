@@ -15,11 +15,7 @@ def pytest_addoption(parser):
 @pytest.fixture(autouse=True)
 def driver(request):
     pytest.data = request.config
-    return get_driver()
-
-
-@pytest.fixture(autouse=True)
-def quit_driver(driver):
-    yield
+    web_driver = get_driver()
+    yield web_driver
     if pytest.data.getoption("--DETACH") == "false" and driver is not None:
-        driver.quit()
+        web_driver.quit()
