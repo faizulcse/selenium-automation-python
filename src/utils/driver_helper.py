@@ -1,5 +1,6 @@
 import os
 
+import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.remote_connection import RemoteConnection
@@ -8,17 +9,17 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 
-def start_driver(name, is_remote):
-    print("=========start browser===========>")
-    return get_remote_driver(name) if is_remote.lower() == "true" else get_driver(name)
+def get_driver():
+    browser = pytest.data.getoption("--BROWSER").lower()
+    remote = pytest.data.getoption("--REMOTE").lower()
+    driver = remote_driver(browser) if remote == "true" else local_driver(browser)
+    driver.maximize_window()
+    driver.get(os.environ.get("BASE_URL"))
+    driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
+    return driver
 
 
-def stop_driver(driver):
-    print("=========close browser===========>")
-    driver.quit()
-
-
-def get_driver(name):
+def local_driver(name):
     match name:
         case "chrome":
             ChromeDriverManager(log_level=0)
@@ -33,23 +34,35 @@ def get_driver(name):
             print("===============> Error!!! Please provide a valid browser name: " + name)
 
 
-def get_remote_driver(name):
+def remote_driver(name):
     return webdriver.Remote(RemoteConnection(os.getenv("HUB_URL")), options=get_options(name))
 
 
-def get_options(opts_type):
-    match opts_type:
+def get_options(opts_name):
+    headless = pytest.data.getoption("--HEADLESS").lower()
+    detach = pytest.data.getoption("--DETACH").lower()
+    match opts_name:
         case "chrome":
             options = webdriver.ChromeOptions()
-            options.add_experimental_option('excludeSwitches', ['enable-logging'])
-            if os.getenv("HEADLESS").lower() == "true":
+            if headless == "true":
                 options.add_argument('--headless')
+            if detach == "true":
+                options.add_experimental_option("detach", True)
             return options
+
         case "firefox":
             options = webdriver.FirefoxOptions()
+            if headless == "true":
+                options.add_argument('--headless')
             return options
+
         case "edge":
             options = webdriver.EdgeOptions()
+            if headless == "true":
+                options.add_argument('--headless')
+            if detach == "true":
+                options.add_experimental_option("detach", True)
             return options
+
         case _:
-            print("===============> Error!!! Please provide a valid browser name: " + opts_type)
+            print("===============> Error!!! Please provide a valid browser name: " + opts_name)

@@ -2,34 +2,24 @@ import os
 
 import pytest
 
-from src.utils.driver_helper import start_driver, stop_driver
-
-
-@pytest.fixture
-def browser(request):
-    return request.config.getoption("--BROWSER")
-
-
-@pytest.fixture
-def remote(request):
-    return request.config.getoption("--REMOTE")
+from src.utils.driver_helper import get_driver
 
 
 def pytest_addoption(parser):
     parser.addoption("--BROWSER", action="store", default=os.getenv("BROWSER"))
     parser.addoption("--REMOTE", action="store", default=os.getenv("REMOTE"))
+    parser.addoption("--HEADLESS", action="store", default=os.getenv("HEADLESS"))
+    parser.addoption("--DETACH", action="store", default=os.getenv("DETACH"))
 
 
 @pytest.fixture(autouse=True)
-def setup(browser, remote):
-    driver = start_driver(browser, remote)
-    driver.maximize_window()
-    driver.get(os.environ.get("BASE_URL"))
-    driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
-    return driver
+def driver(request):
+    pytest.data = request.config
+    return get_driver()
 
 
 @pytest.fixture(autouse=True)
-def tear_down(setup):
+def quit_driver(driver):
     yield
-    stop_driver(setup)
+    if pytest.data.getoption("--DETACH") == "false" and driver is not None:
+        driver.quit()
