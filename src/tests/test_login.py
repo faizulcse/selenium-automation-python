@@ -13,3 +13,9 @@ class TestLogin:
         login_page = LoginPage(current_driver)
         print("Session Id: " + login_page.get_session_id())
         login_page.print_info()
+
+    @pytest.mark.parametrize("a", ["1", "2", "3"])
+    def test_method_2(self, a, current_driver):
+        login_page = LoginPage(current_driver)
+        print("Session Id_" + a + ": " + login_page.get_session_id())
+        login_page.print_info()

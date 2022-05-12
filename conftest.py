@@ -27,7 +27,7 @@ def current_driver(request):
     driver.get(os.environ.get("BASE_URL"))
     driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
     yield driver
-    if pytest.data.getoption("--DETACH") == "false" and driver is not None:
+    if request.config.getoption("--DETACH") == "false" and driver is not None:
         driver.quit()
 
 
@@ -67,6 +67,7 @@ def get_options(browser):
                 options.add_argument('--headless')
             if detach == "true":
                 options.add_experimental_option("detach", True)
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
             return options
 
         case "firefox":
