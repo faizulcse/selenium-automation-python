@@ -10,3 +10,4 @@
 - ` pytest src/tests/ -m login -sv`
 - ` pytest -m login -q`
 - `allure generate allure-results --clean -o allure-report allure serve allure-results`
+- ` pytest --cov-report html:cov_html --cov-branch --cov=test_login .`
