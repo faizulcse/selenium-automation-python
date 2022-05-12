@@ -1,5 +1,6 @@
 import os
 
+from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException, ElementNotSelectableException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class BasePage:
     def __init__(self, driver):
-        self.driver = driver
+        self.driver = driver if driver is not None else webdriver.Remote()
 
     def get_driver(self):
         return self.driver
