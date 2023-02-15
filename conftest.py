@@ -3,7 +3,6 @@ import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.remote.remote_connection import RemoteConnection
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
@@ -11,7 +10,6 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 def pytest_addoption(parser):
     parser.addoption("--BROWSER", action="store", default=os.getenv("BROWSER"))
-    parser.addoption("--REMOTE", action="store", default=os.getenv("REMOTE"))
     parser.addoption("--HEADLESS", action="store", default=os.getenv("HEADLESS"))
     parser.addoption("--DETACH", action="store", default=os.getenv("DETACH"))
 
@@ -20,9 +18,8 @@ def pytest_addoption(parser):
 def current_driver(request):
     pytest.data = request.config
     browser = request.config.getoption("--BROWSER").lower()
-    remote = request.config.getoption("--REMOTE").lower()
 
-    driver = get_driver(browser, remote)
+    driver = get_driver(browser)
     driver.maximize_window()
     driver.get(os.environ.get("BASE_URL"))
     driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
@@ -31,30 +28,19 @@ def current_driver(request):
         driver.quit()
 
 
-def get_driver(browser, remote):
-    if remote == "true":
-        return remote_driver(browser)
-    else:
-        return local_driver(browser)
-
-
-def local_driver(browser):
+def get_driver(browser):
     match browser:
         case "chrome":
-            ChromeDriverManager(log_level=0)
+            ChromeDriverManager()
             return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=get_options(browser))
         case "firefox":
-            GeckoDriverManager(log_level=0)
+            GeckoDriverManager()
             return webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=get_options(browser))
         case "edge":
-            EdgeChromiumDriverManager(log_level=0)
+            EdgeChromiumDriverManager()
             return webdriver.Edge(service=Service(EdgeChromiumDriverManager().install()), options=get_options(browser))
         case _:
             print("===============> Error!!! Please provide a valid browser name: " + browser)
-
-
-def remote_driver(browser):
-    return webdriver.Remote(RemoteConnection(os.getenv("HUB_URL")), options=get_options(browser))
 
 
 def get_options(browser):
