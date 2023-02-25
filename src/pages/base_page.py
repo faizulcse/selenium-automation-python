@@ -34,3 +34,6 @@ class BasePage:
     def get_fluent_wait(self, time_out=os.getenv("EXPLICIT_WAIT")):
         return WebDriverWait(self.get_driver(), time_out, 1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
+
+    def scroll_to_bottom(self):
+        self.get_driver().execute_script("window.scrollTo(0, document.body.scrollHeight);")
