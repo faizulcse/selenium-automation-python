@@ -9,6 +9,4 @@ setup(
     author='Faizul Islam',
     author_email='faizulcse@gmail.com',
     description='A prototype of selenium-automation-python',
-    install_requires=['selenium', 'webdriver-manager', 'pytest', 'pytest-dotenv',
-                      'pytest-xdist', 'allure-pytest', 'pytest-cov', 'pytest-html']
 )
