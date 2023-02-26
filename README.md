@@ -1,7 +1,9 @@
 ### Setup environment and install all dependencies
 
 - Go to project root directory and run the following command
-- `python setup.py install`
+- `brew install virtualenv`
+- `virtualenv -p python3 venv`
+- `pip install -r requirements.txt`
 
 ### Run the test cases using following commands
 
