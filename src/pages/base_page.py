@@ -31,7 +31,7 @@ class BasePage:
     def wait_for_alert(self):
         return self.get_fluent_wait().until(EC.alert_is_present())
 
-    def get_fluent_wait(self, time_out=os.getenv("EXPLICIT_WAIT")):
+    def get_fluent_wait(self, time_out=int(os.getenv("EXPLICIT_WAIT"))):
         return WebDriverWait(self.get_driver(), time_out, 1,
                              ignored_exceptions=[ElementNotVisibleException, ElementNotSelectableException])
 

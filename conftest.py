@@ -22,7 +22,7 @@ def current_driver(request):
     driver = get_driver(browser)
     driver.maximize_window()
     driver.get(os.environ.get("BASE_URL"))
-    driver.implicitly_wait(os.environ.get("IMPLICIT_WAIT"))
+    driver.implicitly_wait(int(os.environ.get("IMPLICIT_WAIT")))
     yield driver
     if request.config.getoption("--DETACH") == "false" and driver is not None:
         driver.quit()
